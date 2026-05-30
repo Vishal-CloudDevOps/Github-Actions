@@ -35,9 +35,7 @@ jobs:
     name: 🧪 Unit Tests (Jest)
     runs-on: ubuntu-latest
     #needs: lint
-    defaults:
-      run:
-        working-directory: project-01-nodejs-basic-ci
+
 
     strategy:
       # Test on multiple Node.js versions to ensure compatibility
