@@ -17,16 +17,12 @@ name: 01 — Node.js Basic CI
 on:
   # Trigger on pushes to main or develop branches
   push:
-    branches: [main, develop]
-    paths:
-      - 'project-01-nodejs-basic-ci/**'
-      - '.github/workflows/01-nodejs-basic-ci.yml'
+    branches: [main, develop, master]
 
   # Trigger on PRs targeting main
   pull_request:
     branches: [main]
-    paths:
-      - 'project-01-nodejs-basic-ci/**'
+    
 
   # Allow manual trigger from GitHub UI
   workflow_dispatch:
@@ -77,9 +73,7 @@ jobs:
     name: 🔍 Lint (ESLint)
     runs-on: ubuntu-latest
     needs: secret-scan
-    defaults:
-      run:
-        working-directory: project-01-nodejs-basic-ci
+  
 
     steps:
       - name: Checkout repository
@@ -93,7 +87,7 @@ jobs:
           # Cache npm dependencies — key is based on package-lock.json hash
           # If the lockfile hasn't changed, the cache is reused (saves ~30s)
           cache: 'npm'
-          cache-dependency-path: project-01-nodejs-basic-ci/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         # `npm ci` is faster and safer than `npm install` in CI:
@@ -112,9 +106,7 @@ jobs:
     name: 🧪 Unit Tests (Jest)
     runs-on: ubuntu-latest
     needs: lint
-    defaults:
-      run:
-        working-directory: project-01-nodejs-basic-ci
+
 
     strategy:
       # Test on multiple Node.js versions to ensure compatibility
@@ -132,7 +124,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: project-01-nodejs-basic-ci/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -149,7 +141,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report-node${{ matrix.node-version }}
-          path: project-01-nodejs-basic-ci/coverage/
+          path: coverage/
           # Keep coverage reports for 7 days
           retention-days: 7
 
@@ -161,9 +153,7 @@ jobs:
     name: 🛡️ Dependency Audit (npm audit)
     runs-on: ubuntu-latest
     needs: secret-scan
-    defaults:
-      run:
-        working-directory: project-01-nodejs-basic-ci
+
 
     steps:
       - name: Checkout repository
@@ -174,7 +164,7 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: project-01-nodejs-basic-ci/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
         run: npm ci
