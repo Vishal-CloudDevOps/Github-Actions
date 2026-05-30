@@ -70,6 +70,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report-node${{ matrix.node-version }}
-          path: project-01-nodejs-basic-ci/coverage/
+          path: coverage/
           # Keep coverage reports for 7 days
           retention-days: 7
