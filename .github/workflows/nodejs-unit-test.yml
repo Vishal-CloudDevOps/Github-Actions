@@ -3,7 +3,7 @@ name: Node.js Basic CI unit test
 on:
   # Trigger on pushes to main or develop branches
   push:
-    branches: [main, develop]
+    branches: [main, develop, master]
 
   # Trigger on PRs targeting main
   pull_request:
